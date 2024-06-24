@@ -2,6 +2,10 @@ import { Tabs } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { Pressable } from "react-native";
 import { useAuth } from "@clerk/clerk-expo";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { Drawer } from "expo-router/drawer";
+import { Button, Text } from "../../elements";
+import { DrawerContentScrollView } from "@react-navigation/drawer";
 
 export const LogoutButton = () => {
   const { signOut } = useAuth();
@@ -11,49 +15,54 @@ export const LogoutButton = () => {
   };
 
   return (
-    <Pressable onPress={doLogout} style={{ marginRight: 10 }}>
-      <Ionicons name="log-out-outline" size={24} color={"#fff"} />
+    <Pressable onPress={doLogout}>
+      <Text>Logout</Text>
+      <Ionicons name="log-out-outline" size={24} />
     </Pressable>
   );
 };
 
-const TabsPage = () => {
-  const { isSignedIn } = useAuth();
-
+function DrawerPage() {
   return (
-    <Tabs
-      screenOptions={{
-        headerStyle: {
-          backgroundColor: "#6c47ff",
-        },
-        headerTintColor: "#fff",
-      }}
-    >
-      <Tabs.Screen
-        name="home"
-        options={{
-          headerTitle: "Home",
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="home-outline" size={size} color={color} />
-          ),
-          tabBarLabel: "Home",
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <Drawer
+        drawerContent={(props) => {
+          return (
+            <DrawerContentScrollView {...props}>
+              <Button
+                onPress={() => {
+                  props.navigation.navigate("home");
+                }}
+              >
+                Home
+              </Button>
+              <Button
+                onPress={() => {
+                  props.navigation.navigate("profile");
+                }}
+              >
+                Profile
+              </Button>
+              <LogoutButton />
+            </DrawerContentScrollView>
+          );
         }}
-        redirect={!isSignedIn}
-      />
-      <Tabs.Screen
-        name="profile"
-        options={{
-          headerTitle: "My Profile",
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="person-outline" size={size} color={color} />
-          ),
-          tabBarLabel: "My Profile",
-          headerRight: () => <LogoutButton />,
-        }}
-        redirect={!isSignedIn}
-      />
-    </Tabs>
+      >
+        <Drawer.Screen
+          name="home"
+          options={{
+            title: "Politix",
+          }}
+        />
+        <Drawer.Screen
+          name="profile"
+          options={{
+            title: "My Profile",
+          }}
+        />
+      </Drawer>
+    </GestureHandlerRootView>
   );
-};
+}
 
-export default TabsPage;
+export default DrawerPage;

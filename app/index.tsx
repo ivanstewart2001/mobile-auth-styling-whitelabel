@@ -1,16 +1,11 @@
-import React from "react";
-import { Button, Layout, Text, View } from "../elements";
-import { router } from "expo-router";
+import { ActivityIndicator, View } from "react-native";
 
-export default function HomeScreen() {
+const StartPage = () => {
   return (
-    <Layout className="flex-1 items-center justify-center space-y-4">
-      <Text className="text-3xl">White Label</Text>
-
-      <View className="flex flex-row space-x-4">
-        <Button onPress={() => router.push("/(auth)/signIn")}>Sign In</Button>
-        <Button onPress={() => router.push("/(auth)/signUp")}>Sign Up</Button>
-      </View>
-    </Layout>
+    <View style={{ flex: 1, justifyContent: "center" }}>
+      <ActivityIndicator size="large" color="#0000ff" />
+    </View>
   );
-}
+};
+
+export default StartPage;
